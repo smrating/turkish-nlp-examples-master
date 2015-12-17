@@ -1,0 +1,9 @@
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# Intellij IDEA specific
+.idea/workspace.xml
