@@ -39,32 +39,37 @@ public class Model {
 	 public static void main(String[] args) throws Exception {
 	 BufferedReader datafile = readDataFile("D:\\eclipse_workspace\\datasets\\reviews.txt");
 	 BufferedReader testfile = readDataFile("D:\\eclipse_workspace\\datasets\\test.txt");
-	 BufferedReader unlabel = readDataFile("D:\\eclipse_workspace\\datasets\\test2.txt");
-	 	Instances unlabeled = new Instances(unlabel);
+	 BufferedReader unlabelfile = readDataFile("D:\\eclipse_workspace\\datasets\\test2.txt");
+	 
+	 //bu da asıl test setimiz yani classları belli değil
+	 	Instances unlabeled = new Instances(unlabelfile);
 	 	unlabeled.setClassIndex(unlabeled.numAttributes() - 1);
+		System.out.println("Okunan test verisi\n\n"+ unlabeled);
+	 	//bu işlem için kullanılcak
 	 	 // create copy
 	 	 Instances labeled = new Instances(unlabeled);
 	 	 
-	 	 
+	 	 //bu modeli değerlendirmek için oransal bişeler söylyebilmek için classı belli olanlarla sınıflandırmak için test set
 	 	Instances test = new Instances(testfile);
 	 	 test.setClassIndex(test.numAttributes() - 1);
+	 	 
+	 	 //bu zaten kendi training setimiz
 		Instances data = new Instances(datafile);
 		 data.setClassIndex(data.numAttributes() - 1);
+			System.out.println("Okunan training verisi\n\n"+ data);
+			
 		 StringToWordVector stw = new StringToWordVector();
-
-		data.setClassIndex(data.numAttributes() - 1);
-		System.out.println("Okunan training verisi\n\n"+ data);
-		
 		 J48 tree = new J48();         // new instance of tree
 		 tree.setUnpruned(true);
 		 FilteredClassifier fc = new FilteredClassifier();
 		 fc.setFilter(stw);
 		 fc.setClassifier(tree);
-		 fc.buildClassifier(data);   // build classifier
+		 fc.buildClassifier(data);   // build classifier filtreyi uyguyarak.
 		 
+		 //modelin yüzdesel değerlendirmesini yap
 		 Evaluation eval = new Evaluation(data);
 		 eval.evaluateModel(fc, test);
-		 System.out.println(eval.toSummaryString("\nResults\n======\n", false));
+		 System.out.println(eval.toSummaryString("\nDeğerlendirme Sonuçları\n======\n", false));
 
 		 for (int i = 0; i < test.numInstances(); i++) {
 			   double pred = fc.classifyInstance(test.instance(i));
@@ -73,14 +78,16 @@ public class Model {
 			   System.out.println(", predicted: " + test.classAttribute().value((int) pred));
 			 }
 	   //burası modeli geliştiriyor.
+		 
 	//alttaki ise test ediyor
 		 // label instances
 		 for (int i = 0; i < unlabeled.numInstances(); i++) {
 		   double clsLabel = fc.classifyInstance(unlabeled.instance(i));
 		   labeled.instance(i).setClassValue(clsLabel);
-		   System.out.println(clsLabel + " -> "
+		   System.out.println("\n\nSınıflandırma Sonucu\n\n"+unlabeled.instance(i) + " -> "
 					+ labeled.classAttribute().value((int) clsLabel));
 		 }
+		 
 		 // save labeled data
 		 BufferedWriter writer = new BufferedWriter(
 		                           new FileWriter("D:\\eclipse_workspace\\datasets\\sonuc.txt"));

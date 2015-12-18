@@ -116,18 +116,18 @@ public class KokAyir {
 				e.printStackTrace();
 			}
 
-
+//arff dosyayı oluşturmak için fastvector tanımladık
 			FastVector atts;
 			double[] vals;
 			Instances dataTest;
 
 			atts = new FastVector();
-			atts.addElement(new Attribute("kok", (FastVector) null));
-			atts.addElement(new Attribute("sinif", (FastVector) null));
+			atts.addElement(new Attribute("kok", (FastVector) null));// ilk attribute
+			atts.addElement(new Attribute("sinif", (FastVector) null));// ikinci attribuute
 			dataTest = new Instances("MyRelation", atts, 0);
 
 			for (int i = 0; i < tokened.size(); i++) // seçtiğim kelimeleri
-														// köklerine ayır.
+														// köklerine ayır. ve arff haline dönüştür.
 			{
 				String test = new ParseWords(parser).parseString(tokened.get(i).toString());
 							
@@ -139,10 +139,8 @@ public class KokAyir {
 			}
 
 			// parsewordsu dene!!! zemberekte köklere ayırma işlemi ile ilgili ayrıntılar için.
-			
-			//test seti oku
-	
-			dataTest.setClassIndex(dataTest.numAttributes() - 1);
+				
+			dataTest.setClassIndex(dataTest.numAttributes() - 1); //son attribute classtır.
 			System.out.println("okunan test set\n\n"+dataTest);// arff formatli kök test setimiz oluştu
 			
 //			 StringToWordVector filterTest = new StringToWordVector();
@@ -158,28 +156,29 @@ public class KokAyir {
 							"D:\\eclipse_workspace\\datasets\\bagofwords.txt"),
 							"ISO-8859-9")));
 			dataClass.setClassIndex(dataClass.numAttributes() - 1);//son att. classtır.
-			    StringToWordVector filter = new StringToWordVector();
+			    StringToWordVector filter = new StringToWordVector();//string değer olduğu için vectore dönüştürdük.
 			    filter.setInputFormat(dataClass);
 			    Instances dataFiltered = Filter.useFilter(dataClass, filter);
-			    System.out.println("\n\nFiltered data:\n\n" + dataFiltered);	//training seti yazdır.
-			    
+			    System.out.println("\n\nFiltered training set:\n\n" + dataFiltered);	//training setin filtrelenmiş halini yazdır.
+		
+			    //j48 sınıflandırma algortiması kullanılacak
 			String[] options = new String[1];
 			options[0] = "-U"; // unpruned tree
 			J48 tree = new J48(); // new instance of tree
 			tree.setOptions(options); // set the options
-			tree.buildClassifier(dataFiltered); // build classifier
+			tree.buildClassifier(dataFiltered); // build classifier by using filtered training set
 			System.out.println(tree);
 			
 //			Evaluation eval = new Evaluation(dataFiltered);
 //			 eval.crossValidateModel(tree, dataFiltered, 10, new Random(1));
 //			 System.out.println(eval.toSummaryString("\nResults\n======\n", false));
 
-			// create copy
+			// create copy of test set
 			Instances labeled = new Instances(dataTest);
 			for (int i = 0; i < dataTest.numInstances(); i++) {
 				double clsLabel = tree.classifyInstance(dataTest.instance(i));
-				labeled.instance(i).setClassValue(clsLabel);
-				System.out.println(clsLabel + " -> "
+				labeled.instance(i).setClassValue(clsLabel); //sınıflandırma işlemini gerçekleştirerek class ver.
+				System.out.println("sınıflandırma sonucu\n\n"+ clsLabel + " -> "
 						+ dataTest.classAttribute().value((int) clsLabel));
 			}
 			
