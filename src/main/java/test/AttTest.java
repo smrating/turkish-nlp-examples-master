@@ -18,22 +18,25 @@ public class AttTest {
 	  
 	public static void main(String[] args) throws Exception {
 	     FastVector      atts;
-	
+	     FastVector      attVals;
 	     Instances       data;
 	 
 	     double[]        vals;
-
-	     int             i;
 	 
 	     // 1. set up attributes
 	     atts = new FastVector();
+	     attVals = new FastVector();
 	    
 	     // - string
 	     atts.addElement(new Attribute("kok", (FastVector) null));
 	     // - date
 	     atts.addElement(new Attribute("sinif", (FastVector) null));
+	     //nominal
+	     
+	  // - nominal
+	     attVals.addElement("val");
+	     atts.addElement(new Attribute("att2", attVals));
 
-	     // -- numeric
 	    
 	 
 	    
@@ -47,8 +50,9 @@ public class AttTest {
 	     
 	     // - string
 	     vals[0] = data.attribute(0).addStringValue("This is a string!");
+	     vals[1] = data.attribute(1).addStringValue("This is a string!");
 	     // - date
-	     vals[1] = data.attribute(1).addStringValue("?");
+	     vals[2] = attVals.indexOf("val");
 	     // - relational
 	     
 	     // add
@@ -61,7 +65,7 @@ public class AttTest {
 	     vals[0] = data.attribute(0).addStringValue("And another one!");
 	     // - date
 	     vals[1] = data.attribute(1).addStringValue("2000-12-01");
-	    
+	     vals[2] = attVals.indexOf("val");
 	     // add
 	     data.add(new Instance(1.0, vals));
 	     System.out.println(data);

@@ -162,7 +162,7 @@ public class Main {
 Bag<String> bag = new Bag<String>();
 
 BufferedReader input = new BufferedReader(new InputStreamReader(
-        new FileInputStream("C:\\Users\\Melis\\Desktop\\text_mining\\deneme.txt"),  "ISO-8859-9"));
+        new FileInputStream("D:\\eclipse_workspace\\datasets\\deneme.txt"),  "ISO-8859-9"));
 //readDataFile("C:\\Users\\Melis\\Desktop\\text_mining\\deneme.txt");
 		 //	String input="Bugün hava çok güzel. Eve hiç gidesim yok. gidesim gidesim çok hava";
 		 	//System.out.println("Paragraf:"+ input);
@@ -199,7 +199,7 @@ BufferedReader input = new BufferedReader(new InputStreamReader(
 				e.printStackTrace();
 			}
 	 	   
-		 	BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\Users\\Melis\\Desktop\\text_mining\\sonuc.txt"));
+		 	BufferedWriter writer = new BufferedWriter(new FileWriter("D:\\eclipse_workspace\\datasets\\deneme.txt"));
 	
 			for(int i=0; i<tokened.size(); i++) // seçtiğim kelimeleri köklerine ayır.
 			{

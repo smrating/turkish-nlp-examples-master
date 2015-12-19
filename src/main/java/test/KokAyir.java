@@ -118,14 +118,20 @@ public class KokAyir {
 
 //arff dosyayı oluşturmak için fastvector tanımladık
 			FastVector atts;
+		    FastVector attVals;
+		
 			double[] vals;
 			Instances dataTest;
 
 			atts = new FastVector();
+		    attVals = new FastVector();
 			atts.addElement(new Attribute("kok", (FastVector) null));// ilk attribute
-			atts.addElement(new Attribute("sinif", (FastVector) null));// ikinci attribuute
+			attVals.addElement("korku");
+			attVals.addElement("genel");
+			atts.addElement(new Attribute("sinif", attVals));
+			
 			dataTest = new Instances("MyRelation", atts, 0);
-
+			dataTest.setClassIndex(dataTest.numAttributes() - 1); //son attribute classtır.
 			for (int i = 0; i < tokened.size(); i++) // seçtiğim kelimeleri
 														// köklerine ayır. ve arff haline dönüştür.
 			{
@@ -133,14 +139,15 @@ public class KokAyir {
 							
 				vals = new double[dataTest.numAttributes()];
 				vals[0] = dataTest.attribute(0).addStringValue(test);//kökü attribute olarak tut
-				vals[1] = dataTest.attribute(1).addStringValue("un"); //classını belirledik,yok
+			attVals.indexOf("sinif"); // neden olmuyo??
+			
 				dataTest.add(new Instance(1.0, vals));//ikisini içeren bir instance oluştur
 				
 			}
 
 			// parsewordsu dene!!! zemberekte köklere ayırma işlemi ile ilgili ayrıntılar için.
 				
-			dataTest.setClassIndex(dataTest.numAttributes() - 1); //son attribute classtır.
+			
 			System.out.println("okunan test set\n\n"+dataTest);// arff formatli kök test setimiz oluştu
 			
 //			 StringToWordVector filterTest = new StringToWordVector();
@@ -156,11 +163,11 @@ public class KokAyir {
 							"D:\\eclipse_workspace\\datasets\\bagofwords.txt"),
 							"ISO-8859-9")));
 			dataClass.setClassIndex(dataClass.numAttributes() - 1);//son att. classtır.
-			    StringToWordVector filter = new StringToWordVector();//string değer olduğu için vectore dönüştürdük.
-			    filter.setInputFormat(dataClass);
-			    Instances dataFiltered = Filter.useFilter(dataClass, filter);
-			    System.out.println("\n\nFiltered training set:\n\n" + dataFiltered);	//training setin filtrelenmiş halini yazdır.
-		
+		    StringToWordVector filter = new StringToWordVector();//string değer olduğu için vectore dönüştürdük.
+		    filter.setInputFormat(dataClass);
+		    Instances dataFiltered = Filter.useFilter(dataClass, filter);
+		    System.out.println("\n\nFiltered training set:\n\n" + dataFiltered);	//training setin filtrelenmiş halini yazdır.
+	
 			    //j48 sınıflandırma algortiması kullanılacak
 			String[] options = new String[1];
 			options[0] = "-U"; // unpruned tree
