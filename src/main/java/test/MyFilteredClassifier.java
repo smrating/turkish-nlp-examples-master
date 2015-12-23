@@ -90,8 +90,29 @@ import java.io.*;
 	public void makeInstance() {
 		// Create the attributes, class and text
 		FastVector fvNominalVal = new FastVector(2);
-		fvNominalVal.addElement("bilisim");
-		fvNominalVal.addElement("cografya");
+		fvNominalVal.addElement("negatif");
+		fvNominalVal.addElement("pozitif");
+//		fvNominalVal.addElement("biyoloji");
+//		fvNominalVal.addElement("botanik");
+//		fvNominalVal.addElement("din");
+//		fvNominalVal.addElement("edebiyat");
+//		fvNominalVal.addElement("bilisim");
+//		fvNominalVal.addElement("cografya");
+//		fvNominalVal.addElement("ekonomi");
+//		fvNominalVal.addElement("felsefe");
+//		fvNominalVal.addElement("fizik");
+//		fvNominalVal.addElement("gramer");
+//		fvNominalVal.addElement("hukuk");
+//		fvNominalVal.addElement("kimya");
+//		fvNominalVal.addElement("matematik");
+//		fvNominalVal.addElement("muzik");
+//		fvNominalVal.addElement("psikoloji");
+//		fvNominalVal.addElement("sosyoloji");
+//		fvNominalVal.addElement("spor");
+//		fvNominalVal.addElement("tarih");
+//		fvNominalVal.addElement("ticaret");
+//		fvNominalVal.addElement("tip");
+//		fvNominalVal.addElement("zooloji");
 		Attribute attribute1 = new Attribute("class", fvNominalVal);
 		Attribute attribute2 = new Attribute("text",(FastVector) null);
 		// Create list of instances with one element

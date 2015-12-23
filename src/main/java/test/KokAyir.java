@@ -126,8 +126,9 @@ public class KokAyir {
 			atts = new FastVector();
 		    attVals = new FastVector();
 			atts.addElement(new Attribute("kok", (FastVector) null));// ilk attribute
-			attVals.addElement("korku");
-			attVals.addElement("genel");
+			attVals.addElement("biyoloji");
+			attVals.addElement("tarih");
+
 			atts.addElement(new Attribute("sinif", attVals));
 			
 			dataTest = new Instances("MyRelation", atts, 0);
@@ -170,9 +171,14 @@ public class KokAyir {
 	
 			    //j48 sınıflandırma algortiması kullanılacak
 			String[] options = new String[1];
-			options[0] = "-U"; // unpruned tree
+			options[0] = "-P"; // pruned tree
+			
 			J48 tree = new J48(); // new instance of tree
+	//		tree.setUnpruned(false);
+			tree.setMinNumObj(1);
 			tree.setOptions(options); // set the options
+			
+			
 			tree.buildClassifier(dataFiltered); // build classifier by using filtered training set
 			System.out.println(tree);
 			

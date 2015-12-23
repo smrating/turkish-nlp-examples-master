@@ -18,10 +18,16 @@ import weka.core.Instances;
 import weka.filters.Filter;
 import weka.filters.unsupervised.attribute.StringToWordVector;
 import weka.classifiers.Evaluation;
+
 import java.util.Random;
+
 import weka.classifiers.bayes.NaiveBayes;
+import weka.classifiers.trees.J48;
+import weka.classifiers.lazy.IBk;
+import weka.classifiers.lazy.KStar;
 import weka.classifiers.meta.FilteredClassifier;
 import weka.core.converters.ArffLoader.ArffReader;
+
 import java.io.*;
 
 /**
@@ -76,7 +82,13 @@ public class MyFilteredLearner {
 			filter.setAttributeIndices("last");
 			classifier = new FilteredClassifier();
 			classifier.setFilter(filter);
-			classifier.setClassifier(new NaiveBayes());
+			J48 tree = new J48();
+			classifier.setClassifier(tree);
+			tree.setUnpruned(false);
+			tree.setMinNumObj(1);
+			tree.setNumFolds(3);
+			tree.setConfidenceFactor((float) 0.25);
+	
 			Evaluation eval = new Evaluation(trainData);
 			eval.crossValidateModel(classifier, trainData, 4, new Random(1));
 			System.out.println(eval.toSummaryString());
@@ -98,7 +110,7 @@ public class MyFilteredLearner {
 			filter.setAttributeIndices("last");
 			classifier = new FilteredClassifier();
 			classifier.setFilter(filter);
-			classifier.setClassifier(new NaiveBayes());
+			classifier.setClassifier(new J48());
 			classifier.buildClassifier(trainData);
 			// Uncomment to see the classifier
 			// System.out.println(classifier);

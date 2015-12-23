@@ -40,7 +40,7 @@ public class TextCategorizationTest {
 
   public static void main(String[] args) throws Exception {
     // convert the directory into a dataset
-	  BufferedReader datafile = readDataFile("D:\\eclipse_workspace\\datasets\\reviews.txt");
+	  BufferedReader datafile = readDataFile("D:\\eclipse_workspace\\datasets\\traininset_engtxt.txt");
 			Instances dataRaw = new Instances(datafile);
 			dataRaw.setClassIndex(dataRaw.numAttributes() - 1);
     System.out.println("\n\nImported data:\n\n" + dataRaw);
