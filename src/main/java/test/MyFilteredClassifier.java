@@ -15,8 +15,8 @@ package test;
  */
  
 import weka.core.*;
-import weka.core.FastVector;
 import weka.classifiers.meta.FilteredClassifier;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.io.*;
@@ -90,8 +90,9 @@ import java.io.*;
 	public void makeInstance() {
 		// Create the attributes, class and text
 		FastVector fvNominalVal = new FastVector(2);
-		fvNominalVal.addElement("negatif");
-		fvNominalVal.addElement("pozitif");
+		fvNominalVal.addElement("ekonomi");
+		fvNominalVal.addElement("bilişim");
+		fvNominalVal.addElement("finans");
 //		fvNominalVal.addElement("biyoloji");
 //		fvNominalVal.addElement("botanik");
 //		fvNominalVal.addElement("din");
@@ -141,25 +142,35 @@ import java.io.*;
 			double pred = classifier.classifyInstance(instances.instance(0));
 			System.out.println("===== Classified instance =====");
 			System.out.println("Class predicted: " + instances.classAttribute().value((int) pred));
+			try {
+				BufferedWriter writer = new BufferedWriter(new FileWriter("D:\\eclipse_workspace\\datasets\\sonuc2.txt"));
+				writer.write(instances.classAttribute().value((int) pred));
+				writer.newLine();
+				writer.flush();
+				writer.close();
+			}
+			catch (IOException e) {
+				System.out.println("Problem found when reading: " + "D:\\eclipse_workspace\\datasets\\sonuc2.txt");
+			}
 		}
 		catch (Exception e) {
 			System.out.println("Problem found when classifying the text");
 		}		
 	}
-	
+
 	/**
 	 * Main method. It is an example of the usage of this class.
 	 * @param args Command-line arguments: fileData and fileModel.
 	 */
 	public static void main (String[] args) {
-	
-		MyFilteredClassifier classifier;
-	
-			classifier = new MyFilteredClassifier();
-			classifier.load("D:\\eclipse_workspace\\datasets\\sonuc.txt");
-			classifier.loadModel("D:\\eclipse_workspace\\datasets\\test.arff");
-			classifier.makeInstance();
-			classifier.classify();
+//	
+//		MyFilteredClassifier classifier;
+//	
+//			classifier = new MyFilteredClassifier();
+//			classifier.load("D:\\eclipse_workspace\\datasets\\sonuc.txt");
+//			classifier.loadModel("D:\\eclipse_workspace\\datasets\\test.arff");
+//			classifier.makeInstance();
+//			classifier.classify();
 		}
 	
 }	

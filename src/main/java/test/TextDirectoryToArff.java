@@ -20,6 +20,7 @@ package test;
  */
  
 import java.io.*;
+
 import weka.core.*;
  
 /**
@@ -51,7 +52,7 @@ public class TextDirectoryToArff {
       newInst[0] = (double)data.attribute(0).addStringValue(files[i]);
       File txt = new File(directoryPath + File.separator + files[i]);
       InputStreamReader is;
-      is = new InputStreamReader(new FileInputStream(txt));
+      is = new InputStreamReader(new FileInputStream(txt),"ISO-8859-9");
       StringBuffer txtStr = new StringBuffer();
       int c;
       while ((c = is.read()) != -1) {
@@ -69,17 +70,20 @@ public class TextDirectoryToArff {
  
   public static void main(String[] args) {
  
-    if (args.length == 1) {
+    
       TextDirectoryToArff tdta = new TextDirectoryToArff();
       try {
-    Instances dataset = tdta.createDataset(args[0]);
+    Instances dataset = tdta.createDataset("D:\\eclipse_workspace\\arff");
     System.out.println(dataset);
+	 BufferedWriter writer = new BufferedWriter(new FileWriter("D:\\eclipse_workspace\\datasets\\sonuc.txt"));
+	 writer.write(dataset.toString());
+	 writer.newLine();
+	 writer.flush();
+	 writer.close();
       } catch (Exception e) {
     System.err.println(e.getMessage());
     e.printStackTrace();
       }
-    } else {
-      System.out.println("Usage: java TextDirectoryToArff <directory name>");
-    }
+  
   }
 }
