@@ -13,7 +13,7 @@ package test;
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
- 
+
 import weka.core.*;
 import weka.classifiers.meta.FilteredClassifier;
 
@@ -22,15 +22,14 @@ import java.util.ArrayList;
 import java.io.*;
 
 /**
- * This class implements a simple text classifier in Java using WEKA.
- * It loads a file with the text to classify, and the model that has been
- * learnt with MyFilteredLearner.java.
+ * This class implements a simple text classifier in Java using WEKA. It loads a
+ * file with the text to classify, and the model that has been learnt with
+ * MyFilteredLearner.java.
+ * 
  * @author Jose Maria Gomez Hidalgo - http://www.esp.uem.es/jmgomez
  * @see MyFilteredLearner
  */
- public class MyFilteredClassifier {
-	 
-	 
+public class MyFilteredClassifier {
 
 	/**
 	 * String that stores the text to classify
@@ -44,10 +43,12 @@ import java.io.*;
 	 * Object that stores the classifier.
 	 */
 	FilteredClassifier classifier;
-		
+
 	/**
 	 * This method loads the text to be classified.
-	 * @param fileName The name of the file that stores the text.
+	 * 
+	 * @param fileName
+	 *            The name of the file that stores the text.
 	 */
 	public void load(String fileName) {
 		try {
@@ -55,37 +56,41 @@ import java.io.*;
 			String line;
 			text = "";
 			while ((line = reader.readLine()) != null) {
-                text = text + " " + line;
-            }
-			System.out.println("===== Loaded text data: " + fileName + " =====");
+				text = text + " " + line;
+			}
+			System.out
+					.println("===== Loaded text data: " + fileName + " =====");
 			reader.close();
 			System.out.println(text);
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			System.out.println("Problem found when reading: " + fileName);
 		}
 	}
-			
+
 	/**
 	 * This method loads the model to be used as classifier.
-	 * @param fileName The name of the file that stores the text.
+	 * 
+	 * @param fileName
+	 *            The name of the file that stores the text.
 	 */
 	public void loadModel(String fileName) {
 		try {
-			ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileName));
-            Object tmp = in.readObject();
+			ObjectInputStream in = new ObjectInputStream(new FileInputStream(
+					fileName));
+			Object tmp = in.readObject();
 			classifier = (FilteredClassifier) tmp;
-            in.close();
- 			System.out.println("===== Loaded model: " + fileName + " =====");
-       } 
-		catch (Exception e) {
-			// Given the cast, a ClassNotFoundException must be caught along with the IOException
+			in.close();
+			System.out.println("===== Loaded model: " + fileName + " =====");
+		} catch (Exception e) {
+			// Given the cast, a ClassNotFoundException must be caught along
+			// with the IOException
 			System.out.println("Problem found when reading: " + fileName);
 		}
 	}
-	
+
 	/**
-	 * This method creates the instance to be classified, from the text that has been read.
+	 * This method creates the instance to be classified, from the text that has
+	 * been read.
 	 */
 	public void makeInstance() {
 		// Create the attributes, class and text
@@ -93,34 +98,34 @@ import java.io.*;
 		fvNominalVal.addElement("ekonomi");
 		fvNominalVal.addElement("bilişim");
 		fvNominalVal.addElement("finans");
-//		fvNominalVal.addElement("biyoloji");
-//		fvNominalVal.addElement("botanik");
-//		fvNominalVal.addElement("din");
-//		fvNominalVal.addElement("edebiyat");
-//		fvNominalVal.addElement("bilisim");
-//		fvNominalVal.addElement("cografya");
-//		fvNominalVal.addElement("ekonomi");
-//		fvNominalVal.addElement("felsefe");
-//		fvNominalVal.addElement("fizik");
-//		fvNominalVal.addElement("gramer");
-//		fvNominalVal.addElement("hukuk");
-//		fvNominalVal.addElement("kimya");
-//		fvNominalVal.addElement("matematik");
-//		fvNominalVal.addElement("muzik");
-//		fvNominalVal.addElement("psikoloji");
-//		fvNominalVal.addElement("sosyoloji");
-//		fvNominalVal.addElement("spor");
-//		fvNominalVal.addElement("tarih");
-//		fvNominalVal.addElement("ticaret");
-//		fvNominalVal.addElement("tip");
-//		fvNominalVal.addElement("zooloji");
+		// fvNominalVal.addElement("biyoloji");
+		// fvNominalVal.addElement("botanik");
+		// fvNominalVal.addElement("din");
+		// fvNominalVal.addElement("edebiyat");
+		// fvNominalVal.addElement("bilisim");
+		// fvNominalVal.addElement("cografya");
+		// fvNominalVal.addElement("ekonomi");
+		// fvNominalVal.addElement("felsefe");
+		// fvNominalVal.addElement("fizik");
+		// fvNominalVal.addElement("gramer");
+		// fvNominalVal.addElement("hukuk");
+		// fvNominalVal.addElement("kimya");
+		// fvNominalVal.addElement("matematik");
+		// fvNominalVal.addElement("muzik");
+		// fvNominalVal.addElement("psikoloji");
+		// fvNominalVal.addElement("sosyoloji");
+		// fvNominalVal.addElement("spor");
+		// fvNominalVal.addElement("tarih");
+		// fvNominalVal.addElement("ticaret");
+		// fvNominalVal.addElement("tip");
+		// fvNominalVal.addElement("zooloji");
 		Attribute attribute1 = new Attribute("class", fvNominalVal);
-		Attribute attribute2 = new Attribute("text",(FastVector) null);
+		Attribute attribute2 = new Attribute("text", (FastVector) null);
 		// Create list of instances with one element
 		FastVector fvWekaAttributes = new FastVector(2);
 		fvWekaAttributes.addElement(attribute1);
 		fvWekaAttributes.addElement(attribute2);
-		instances = new Instances("Test relation", fvWekaAttributes, 1);           
+		instances = new Instances("Test relation", fvWekaAttributes, 1);
 		// Set class index
 		instances.setClassIndex(0);
 		// Create and add the instance
@@ -129,48 +134,52 @@ import java.io.*;
 		// Another way to do it:
 		// instance.setValue((Attribute)fvWekaAttributes.elementAt(1), text);
 		instances.add(instance);
- 		System.out.println("===== Instance created with reference dataset =====");
+		System.out
+				.println("===== Instance created with reference dataset =====");
 		System.out.println(instances);
 	}
-	
+
 	/**
-	 * This method performs the classification of the instance.
-	 * Output is done at the command-line.
+	 * This method performs the classification of the instance. Output is done
+	 * at the command-line.
 	 */
 	public void classify() {
 		try {
 			double pred = classifier.classifyInstance(instances.instance(0));
 			System.out.println("===== Classified instance =====");
-			System.out.println("Class predicted: " + instances.classAttribute().value((int) pred));
+			System.out.println("Class predicted: "
+					+ instances.classAttribute().value((int) pred));
 			try {
-				BufferedWriter writer = new BufferedWriter(new FileWriter("D:\\eclipse_workspace\\datasets\\sonuc2.txt"));
+				BufferedWriter writer = new BufferedWriter(new FileWriter(
+						"D:\\eclipse_workspace\\datasets\\sonuc2.txt"));
 				writer.write(instances.classAttribute().value((int) pred));
 				writer.newLine();
 				writer.flush();
 				writer.close();
+			} catch (IOException e) {
+				System.out.println("Problem found when reading: "
+						+ "D:\\eclipse_workspace\\datasets\\sınıf_sonuç.txt");
 			}
-			catch (IOException e) {
-				System.out.println("Problem found when reading: " + "D:\\eclipse_workspace\\datasets\\sonuc2.txt");
-			}
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			System.out.println("Problem found when classifying the text");
-		}		
+		}
 	}
 
 	/**
 	 * Main method. It is an example of the usage of this class.
-	 * @param args Command-line arguments: fileData and fileModel.
+	 * 
+	 * @param args
+	 *            Command-line arguments: fileData and fileModel.
 	 */
-	public static void main (String[] args) {
-//	
-//		MyFilteredClassifier classifier;
-//	
-//			classifier = new MyFilteredClassifier();
-//			classifier.load("D:\\eclipse_workspace\\datasets\\sonuc.txt");
-//			classifier.loadModel("D:\\eclipse_workspace\\datasets\\test.arff");
-//			classifier.makeInstance();
-//			classifier.classify();
-		}
-	
-}	
+	public static void main(String[] args) {
+		//
+		// MyFilteredClassifier classifier;
+		//
+		// classifier = new MyFilteredClassifier();
+		// classifier.load("D:\\eclipse_workspace\\datasets\\sonuc.txt");
+		// classifier.loadModel("D:\\eclipse_workspace\\datasets\\test.arff");
+		// classifier.makeInstance();
+		// classifier.classify();
+	}
+
+}
