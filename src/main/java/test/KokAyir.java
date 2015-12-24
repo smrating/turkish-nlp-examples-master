@@ -76,12 +76,11 @@ public class KokAyir {
 
 	public static void main(String[] args) throws Exception {
 
-		//köklerine ayrılacak kullanıcı verisini oku
+		// köklerine ayrılacak kullanıcı verisini oku
 		BufferedReader input = new BufferedReader(new InputStreamReader(
 				new FileInputStream(
 						"D:\\eclipse_workspace\\datasets\\deneme.txt"),
 				"ISO-8859-9"));
-	
 
 		SentenceBoundaryDetector detector = new SimpleSentenceBoundaryDetector();
 		// System.out.println(input.readLine());
@@ -116,86 +115,110 @@ public class KokAyir {
 				e.printStackTrace();
 			}
 
-//arff dosyayı oluşturmak için fastvector tanımladık
+			// arff dosyayı oluşturmak için fastvector tanımladık
 			FastVector atts;
-		    FastVector attVals;
-		
+			FastVector attVals;
+
 			double[] vals;
 			Instances dataTest;
 
 			atts = new FastVector();
-		    attVals = new FastVector();
-			atts.addElement(new Attribute("kok", (FastVector) null));// ilk attribute
+			attVals = new FastVector();
+			atts.addElement(new Attribute("kok", (FastVector) null));// ilk
+																		// attribute
 			attVals.addElement("biyoloji");
 			attVals.addElement("tarih");
 
 			atts.addElement(new Attribute("sinif", attVals));
-			
+
 			dataTest = new Instances("MyRelation", atts, 0);
-			dataTest.setClassIndex(dataTest.numAttributes() - 1); //son attribute classtır.
+			dataTest.setClassIndex(dataTest.numAttributes() - 1); // son
+																	// attribute
+																	// classtır.
 			for (int i = 0; i < tokened.size(); i++) // seçtiğim kelimeleri
-														// köklerine ayır. ve arff haline dönüştür.
+														// köklerine ayır. ve
+														// arff haline dönüştür.
 			{
-				String test = new ParseWords(parser).parseString(tokened.get(i).toString());
-							
+				String test = new ParseWords(parser).parseString(tokened.get(i)
+						.toString());
+
 				vals = new double[dataTest.numAttributes()];
-				vals[0] = dataTest.attribute(0).addStringValue(test);//kökü attribute olarak tut
-			attVals.indexOf("sinif"); // neden olmuyo??
-			
-				dataTest.add(new Instance(1.0, vals));//ikisini içeren bir instance oluştur
-				
+				vals[0] = dataTest.attribute(0).addStringValue(test);// kökü
+																		// attribute
+																		// olarak
+																		// tut
+				attVals.indexOf("sinif"); // neden olmuyo??
+
+				dataTest.add(new Instance(1.0, vals));// ikisini içeren bir
+														// instance oluştur
+
 			}
 
-			// parsewordsu dene!!! zemberekte köklere ayırma işlemi ile ilgili ayrıntılar için.
-				
-			
-			System.out.println("okunan test set\n\n"+dataTest);// arff formatli kök test setimiz oluştu
-			
-//			 StringToWordVector filterTest = new StringToWordVector();
-//			    filterTest.setInputFormat(dataTest);
-//			    Instances testFiltered = Filter.useFilter(dataTest, filterTest);
-//			    System.out.println("\n\nFiltered test data:\n\n" + testFiltered);
+			// parsewordsu dene!!! zemberekte köklere ayırma işlemi ile ilgili
+			// ayrıntılar için.
+
+			System.out.println("okunan test set\n\n" + dataTest);// arff
+																	// formatli
+																	// kök test
+																	// setimiz
+																	// oluştu
+
+			// StringToWordVector filterTest = new StringToWordVector();
+			// filterTest.setInputFormat(dataTest);
+			// Instances testFiltered = Filter.useFilter(dataTest, filterTest);
+			// System.out.println("\n\nFiltered test data:\n\n" + testFiltered);
 			// set class attribute
-					
-											
-			//training seti oku
+
+			// training seti oku
 			Instances dataClass = new Instances(new BufferedReader(
 					new InputStreamReader(new FileInputStream(
 							"D:\\eclipse_workspace\\datasets\\bagofwords.txt"),
 							"ISO-8859-9")));
-			dataClass.setClassIndex(dataClass.numAttributes() - 1);//son att. classtır.
-		    StringToWordVector filter = new StringToWordVector();//string değer olduğu için vectore dönüştürdük.
-		    filter.setInputFormat(dataClass);
-		    Instances dataFiltered = Filter.useFilter(dataClass, filter);
-		    System.out.println("\n\nFiltered training set:\n\n" + dataFiltered);	//training setin filtrelenmiş halini yazdır.
-	
-			    //j48 sınıflandırma algortiması kullanılacak
+			dataClass.setClassIndex(dataClass.numAttributes() - 1);// son att.
+																	// classtır.
+			StringToWordVector filter = new StringToWordVector();// string değer
+																	// olduğu
+																	// için
+																	// vectore
+																	// dönüştürdük.
+			filter.setInputFormat(dataClass);
+			Instances dataFiltered = Filter.useFilter(dataClass, filter);
+			System.out.println("\n\nFiltered training set:\n\n" + dataFiltered); // training
+																					// setin
+																					// filtrelenmiş
+																					// halini
+																					// yazdır.
+
+			// j48 sınıflandırma algortiması kullanılacak
 			String[] options = new String[1];
 			options[0] = "-P"; // pruned tree
-			
+
 			J48 tree = new J48(); // new instance of tree
-	//		tree.setUnpruned(false);
+			// tree.setUnpruned(false);
 			tree.setMinNumObj(1);
 			tree.setOptions(options); // set the options
-			
-			
-			tree.buildClassifier(dataFiltered); // build classifier by using filtered training set
+
+			tree.buildClassifier(dataFiltered); // build classifier by using
+												// filtered training set
 			System.out.println(tree);
-			
-//			Evaluation eval = new Evaluation(dataFiltered);
-//			 eval.crossValidateModel(tree, dataFiltered, 10, new Random(1));
-//			 System.out.println(eval.toSummaryString("\nResults\n======\n", false));
+
+			// Evaluation eval = new Evaluation(dataFiltered);
+			// eval.crossValidateModel(tree, dataFiltered, 10, new Random(1));
+			// System.out.println(eval.toSummaryString("\nResults\n======\n",
+			// false));
 
 			// create copy of test set
 			Instances labeled = new Instances(dataTest);
 			for (int i = 0; i < dataTest.numInstances(); i++) {
 				double clsLabel = tree.classifyInstance(dataTest.instance(i));
-				labeled.instance(i).setClassValue(clsLabel); //sınıflandırma işlemini gerçekleştirerek class ver.
-				System.out.println("sınıflandırma sonucu\n\n"+ clsLabel + " -> "
+				labeled.instance(i).setClassValue(clsLabel); // sınıflandırma
+																// işlemini
+																// gerçekleştirerek
+																// class ver.
+				System.out.println("sınıflandırma sonucu\n\n" + clsLabel
+						+ " -> "
 						+ dataTest.classAttribute().value((int) clsLabel));
 			}
-			
-
 
 			// save labeled data sonucu yaz.
 			BufferedWriter writer = new BufferedWriter(new FileWriter(

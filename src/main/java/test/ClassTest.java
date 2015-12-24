@@ -32,7 +32,7 @@ public class ClassTest {
 	public void classifierTest() {
 
 		classifier = new MyFilteredClassifier();
-		classifier.load("D:\\eclipse_workspace\\datasets\\sonuc.txt");
+		classifier.load("D:\\eclipse_workspace\\datasets\\kök_sonuç.txt");
 		classifier.loadModel("D:\\eclipse_workspace\\datasets\\test.arff");
 		classifier.makeInstance();
 		classifier.classify();

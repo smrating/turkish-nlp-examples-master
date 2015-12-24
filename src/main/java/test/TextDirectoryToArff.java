@@ -39,7 +39,10 @@ public class TextDirectoryToArff {
   public Instances createDataset(String directoryPath) throws Exception {
  
     FastVector atts = new FastVector(2);
-    atts.addElement(new Attribute("filename", (FastVector) null));
+    atts.addElement(new Attribute("filename", (FastVector) null));//string degil nominal olmalı! ilk değer class olmalı
+    //The StringToWordVector filter moves the class attributes, which is usually the last one, to the front. 
+    //The last attribute will be most likely a word-count that the filter produced. 
+    //Define the index of the class attribute to use.
     atts.addElement(new Attribute("contents", (FastVector) null));
     Instances data = new Instances("text_files_in_" + directoryPath, atts, 0);
  
@@ -73,9 +76,11 @@ public class TextDirectoryToArff {
     
       TextDirectoryToArff tdta = new TextDirectoryToArff();
       try {
-    Instances dataset = tdta.createDataset("D:\\eclipse_workspace\\arff");
+    Instances dataset = tdta.createDataset("D:\\eclipse_workspace\\tasarım");
     System.out.println(dataset);
-	 BufferedWriter writer = new BufferedWriter(new FileWriter("D:\\eclipse_workspace\\datasets\\sonuc.txt"));
+	// BufferedWriter writer = new BufferedWriter(new FileWriter("D:\\eclipse_workspace\\datasets\\sonuc.txt"));
+	 BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(
+				"D:\\eclipse_workspace\\datasets\\sonuc.txt"),"ISO-8859-9"));
 	 writer.write(dataset.toString());
 	 writer.newLine();
 	 writer.flush();

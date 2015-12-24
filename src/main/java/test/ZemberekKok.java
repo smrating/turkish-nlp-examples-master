@@ -18,10 +18,12 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
@@ -70,19 +72,18 @@ public class ZemberekKok {
 
 		try (BufferedReader input = new BufferedReader(new InputStreamReader(
 				new FileInputStream(
-						"D:\\eclipse_workspace\\datasets\\bilişim_test.txt"),
+						"D:\\eclipse_workspace\\datasets\\ekonomi_test.txt"),
 				"ISO-8859-9"))) {
 			StringBuilder sb = new StringBuilder();
 			String line = input.readLine();
-			while ((line != null)) // seçtiğim kelimeleri
-			// köklerine ayır.
+			while ((line != null)) // metin dosyası satır satır okundu.
 			{
 				sb.append(line);
 				sb.append(System.lineSeparator());
 				line = input.readLine();
 			}
 			String text = sb.toString();
-			tokened = simpleTokenization(text);
+			tokened = simpleTokenization(text);//boşluğa göre kelimeleri ayırdı
 			System.out.println(tokened.toString());
 
 			try {
@@ -92,15 +93,15 @@ public class ZemberekKok {
 				e.printStackTrace();
 			}
 
-			BufferedWriter writer = new BufferedWriter(new FileWriter(
-					"D:\\eclipse_workspace\\datasets\\kök_sonuç.txt"));
+			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(
+					"D:\\eclipse_workspace\\datasets\\kök_sonuç.txt"),"ISO-8859-9"));
 			for (int i = 0; i < tokened.size(); i++) {
-				String kok = new ParseWords(parser).parseString(tokened.get(i)
+				String kok = new ParseWords(parser).parseString(tokened.get(i)//kokleri buldu
 						.toString());
 				System.out.println(kok);
 
 				writer.write(kok.toString());
-				writer.newLine();
+				writer.append(" ");//herbir koku ayrı bir satır olarak yazıyordu boşluk olarak yazdırdım.
 
 			}
 
